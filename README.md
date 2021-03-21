@@ -11,3 +11,11 @@ $ pip install blobcli
 ```
 
 ## Usage
+
+```sh
+$ blobcli ls
+```
+
+```
+$ blobcli ls blob://<my_container>
+```

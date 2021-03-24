@@ -12,10 +12,22 @@ $ pip install blobcli
 
 ## Usage
 
+### List blobs
 ```sh
-$ blobcli ls
+$ blobcli ls <target>
 ```
 
+### Delete blob
+```sh
+$ blobcli rm <target>
 ```
-$ blobcli ls blob://<my_container>
+
+### Move blob
+```sh
+$ blobcli mv <source> <target> 
+```
+
+### Copy blob
+```sh
+$ blobcli cp <source> <target>
 ```

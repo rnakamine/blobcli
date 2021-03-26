@@ -1,3 +1,5 @@
+import json
+
 import click
 
 import blobstorage
@@ -13,13 +15,12 @@ def cli():
 def ls(target):
     """List containers or blobs."""
     if target:
-        click.echo('blobs')
-        return
+        obj = blobstorage.list_blobs(target)
     else:
         obj = blobstorage.list_contaners()
 
     for o in obj:
-        click.echo('{0} {1}'.format(o.last_modified, o.name))
+        click.echo('{}\t{}'.format(o['last_modified'], o['name']))
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ import json
 
 import click
 
-import blobstorage
+from blobstorage import BlobStorage
 
 
 @click.group()
@@ -15,12 +15,14 @@ def cli():
 def ls(target):
     """List containers or blobs."""
     if target:
-        obj = blobstorage.list_blobs(target)
+        blobs = BlobStorage().list_blobs(target)
+        for blob in blobs:
+            click.echo('{}\t{}'.format(blob['last_modified'], blob['name']))
     else:
-        obj = blobstorage.list_contaners()
-
-    for o in obj:
-        click.echo('{}\t{}'.format(o['last_modified'], o['name']))
+        containers = BlobStorage().list_contaners()
+        for container in containers:
+            click.echo('{}\t{}'.format(
+                container['last_modified'], container['name']))
 
 
 if __name__ == '__main__':

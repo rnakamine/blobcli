@@ -72,7 +72,6 @@ class BlobStorageClient():
 
     def _convert_bytes(self, num):
         step_unit = 1024
-
         for x in ['B', 'K', 'M', 'G', 'T']:
             if num < step_unit:
                 return '{:3.0f}{:s}'.format(num, x)

@@ -5,7 +5,7 @@ import click
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 
-class BlobStorage():
+class BlobStorageClient():
 
     def __init__(self):
         self._blob_service_client = BlobServiceClient.from_connection_string(

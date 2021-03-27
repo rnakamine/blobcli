@@ -31,7 +31,7 @@ class BlobStorageClient():
         container_client = self._blob_service_client.get_container_client(
             container_name)
 
-        blobs = []
+        blobs, dirs = [], []
         tmp_dir_name = []
         for blob in container_client.list_blobs():
             blob_path_list = blob.name.split('/')
@@ -44,21 +44,19 @@ class BlobStorageClient():
                 else:
                     continue
 
-            name, last_modified, size = None, None, None
-
             # check directory or file
-            if len(blob_path_list) > 1:
+            if len(blob_path_list) > 1:  # when directory
                 if blob_path_list[0] not in tmp_dir_name:
-                    name = blob_path_list[0] + '/'
+                    dirs.append({'name': blob_path_list[0] + '/',
+                                 'last_modified': None,
+                                 'size': 'PRE'})
                     tmp_dir_name.append(blob_path_list[0])
-            else:
-                name = blob_path_list[0]
-                last_modified = blob.last_modified
-                size = self._convert_bytes(blob.size)
+            else:  # when blob
+                blobs.append({'name': blob_path_list[0],
+                              'last_modified': blob.last_modified,
+                              'size': self._convert_bytes(blob.size)})
 
-            blobs.append(
-                {'name': name, 'last_modified': last_modified, 'size': size})
-
+        blobs = dirs + blobs
         if not blobs:
             click.echo('ls: {}: No such blob or directory'.format(
                 original_target), err=True)

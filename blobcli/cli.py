@@ -19,8 +19,8 @@ def ls(target):
     if target:
         blobs = blob_client.list_blobs(target)
         for blob in blobs:
-            click.echo('{}\t{} {}'.format(
-                blob['last_modified'] or '', blob['size'] or '', blob['name']))
+            click.echo('{:>25}\t{:>5} {}'.format(
+                str(blob['last_modified'] or ''), blob['size'] or '', blob['name']))
     else:
         containers = blob_client.list_contaners()
         for container in containers:

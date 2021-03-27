@@ -2,7 +2,7 @@ import json
 
 import click
 
-from blobstorage import BlobStorage
+from .blobstorage import BlobStorage
 
 
 @click.group()

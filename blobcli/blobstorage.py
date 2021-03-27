@@ -46,15 +46,20 @@ class BlobStorage():
                     else:
                         continue
 
+                name, last_modified, size = None, None, None
+
                 # check directory or file
                 if len(blob_path_list) > 1:
                     if blob_path_list[0] not in tmp_dir_name:
-                        blobs.append({'name': blob_path_list[0] + '/',
-                                      'last_modified': None})
+                        name = blob_path_list[0] + '/'
                         tmp_dir_name.append(blob_path_list[0])
                 else:
-                    blobs.append({'name': blob_path_list[0],
-                                  'last_modified': blob.last_modified})
+                    name = blob_path_list[0]
+                    last_modified = blob.last_modified
+                    size = blob.size
+
+                blobs.append(
+                    {'name': name, 'last_modified': last_modified, 'size': size})
 
         if not blobs:
             click.echo('ls: {}: No such blob or directory'.format(

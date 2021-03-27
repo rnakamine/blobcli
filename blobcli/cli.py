@@ -14,12 +14,14 @@ def cli():
 @click.argument('target', default='')
 def ls(target):
     """List containers or blobs."""
+    blobstorage = BlobStorage()
     if target:
-        blobs = BlobStorage().list_blobs(target)
+        blobs = blobstorage.list_blobs(target)
         for blob in blobs:
-            click.echo('{}\t{}'.format(blob['last_modified'], blob['name']))
+            click.echo('{}\t{} {}'.format(
+                blob['last_modified'] or '', blob['size'] or '', blob['name']))
     else:
-        containers = BlobStorage().list_contaners()
+        containers = blobstorage.list_contaners()
         for container in containers:
             click.echo('{}\t{}'.format(
                 container['last_modified'], container['name']))

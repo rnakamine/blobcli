@@ -54,7 +54,7 @@ class BlobStorageClient():
             else:
                 name = blob_path_list[0]
                 last_modified = blob.last_modified
-                size = blob.size
+                size = self._convert_bytes(blob.size)
 
             blobs.append(
                 {'name': name, 'last_modified': last_modified, 'size': size})
@@ -71,3 +71,11 @@ class BlobStorageClient():
             if t != blob_path_list[i]:
                 return False
         return True
+
+    def _convert_bytes(self, num):
+        step_unit = 1024
+
+        for x in ['B', 'K', 'M', 'G', 'T']:
+            if num < step_unit:
+                return '{:3.0f}{:s}'.format(num, x)
+            num /= step_unit

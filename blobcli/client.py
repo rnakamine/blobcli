@@ -34,32 +34,30 @@ class BlobStorageClient():
         blobs = []
         tmp_dir_name = []
         for blob in container_client.list_blobs():
-            if not blob.deleted:
-                blob_path_list = blob.name.split('/')
-                if target_path_list:
-                    if self._find_blob(target_path_list, blob_path_list):
-                        if target_path_list == blob_path_list:
-                            blob_path_list = blob_path_list[-1:]
-                        else:
-                            blob_path_list = blob_path_list[len(
-                                target_path_list):]
+            blob_path_list = blob.name.split('/')
+            if target_path_list:
+                if self._find_blob(target_path_list, blob_path_list):
+                    if target_path_list == blob_path_list:
+                        blob_path_list = blob_path_list[-1:]
                     else:
-                        continue
-
-                name, last_modified, size = None, None, None
-
-                # check directory or file
-                if len(blob_path_list) > 1:
-                    if blob_path_list[0] not in tmp_dir_name:
-                        name = blob_path_list[0] + '/'
-                        tmp_dir_name.append(blob_path_list[0])
+                        blob_path_list = blob_path_list[len(target_path_list):]
                 else:
-                    name = blob_path_list[0]
-                    last_modified = blob.last_modified
-                    size = blob.size
+                    continue
 
-                blobs.append(
-                    {'name': name, 'last_modified': last_modified, 'size': size})
+            name, last_modified, size = None, None, None
+
+            # check directory or file
+            if len(blob_path_list) > 1:
+                if blob_path_list[0] not in tmp_dir_name:
+                    name = blob_path_list[0] + '/'
+                    tmp_dir_name.append(blob_path_list[0])
+            else:
+                name = blob_path_list[0]
+                last_modified = blob.last_modified
+                size = blob.size
+
+            blobs.append(
+                {'name': name, 'last_modified': last_modified, 'size': size})
 
         if not blobs:
             click.echo('ls: {}: No such blob or directory'.format(

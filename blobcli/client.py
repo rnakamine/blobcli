@@ -15,8 +15,9 @@ class BlobStorageClient():
             connect_str)
 
     def list_contaners(self):
-        containers = self._blob_service_client.list_containers()
-        return containers
+        list_containers = [
+            c for c in self._blob_service_client.list_containers() if not c.deleted]
+        return list_containers
 
     def list_blobs(self, target):
         if not target.startswith('blob://'):

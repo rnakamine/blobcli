@@ -6,8 +6,12 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 class BlobStorageClient():
 
     def __init__(self):
+        connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+        if not connect_str:
+            msg = 'Please add the connection string of the storage account to the AZURE_STORAGE_CONNECTION_STRING variable.'
+            raise Exception(msg)
         self._blob_service_client = BlobServiceClient.from_connection_string(
-            os.getenv('AZURE_STORAGE_CONNECTION_STRING'))
+            connect_str)
 
     def list_contaners(self):
         containers = self._blob_service_client.list_containers()

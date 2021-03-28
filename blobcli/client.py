@@ -57,7 +57,7 @@ class BlobStorageClient():
                               'size': self._convert_bytes(blob.size)})
 
         blobs = dirs + blobs
-        if not blobs:
+        if target_path_list and not blobs:
             msg = 'ls: {}: No such blob or directory'.format(original_target)
             raise Exception(msg)
 

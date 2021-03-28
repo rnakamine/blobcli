@@ -34,8 +34,8 @@ class BlobStorageClient():
 
         container_client = self._blob_service_client.get_container_client(
             container_name)
-        list_blobs = [b for b in container_client.list_blobs()
-                      if not b.deleted]
+        list_blobs = [
+            b for b in container_client.list_blobs() if not b.deleted]
 
         blobs, dirs = [], []
         tmp_dir_name = []

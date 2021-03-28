@@ -10,6 +10,7 @@ class BlobStorageClient():
         if not connect_str:
             msg = 'Please add the connection string of the storage account to the AZURE_STORAGE_CONNECTION_STRING variable.'
             raise Exception(msg)
+
         self._blob_service_client = BlobServiceClient.from_connection_string(
             connect_str)
 

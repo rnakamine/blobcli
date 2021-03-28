@@ -1,4 +1,5 @@
 import json
+import sys
 
 import click
 
@@ -16,6 +17,7 @@ def ls(target):
     """List containers or blobs."""
 
     blob_client = BlobStorageClient()
+
     if target:
         blobs = blob_client.list_blobs(target)
         for blob in blobs:
@@ -28,5 +30,14 @@ def ls(target):
                 container['last_modified'], container['name']))
 
 
+def main():
+    try:
+        cli()
+        sys.exit(0)
+    except Exception as e:
+        click.echo(e, err=True)
+        sys.exit(1)
+
+
 if __name__ == '__main__':
-    cli()
+    main()

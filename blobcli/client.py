@@ -1,8 +1,6 @@
 import os
-import sys
 
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-import click
 
 
 class BlobStorageClient():
@@ -17,8 +15,8 @@ class BlobStorageClient():
 
     def list_blobs(self, target):
         if not target.startswith('blob://'):
-            click.echo('ls: {}: Invalid target'.format(target), err=True)
-            sys.exit(1)
+            msg = 'ls: {}: Invalid target'.format(target)
+            raise Exception(msg)
 
         original_target = target
         if target.endswith('/'):
@@ -60,9 +58,8 @@ class BlobStorageClient():
 
         blobs = dirs + blobs
         if not blobs:
-            click.echo('ls: {}: No such blob or directory'.format(
-                original_target), err=True)
-            sys.exit(1)
+            msg = 'ls: {}: No such blob or directory'.format(original_target)
+            raise Exception(msg)
 
         return blobs
 

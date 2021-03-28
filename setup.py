@@ -4,6 +4,6 @@ setup(
     install_requires=['Click', 'azure-storage-blob'],
     entry_points='''
         [console_scripts]
-        blobcli=blobcli.cli:cli
+        blobcli=blobcli.cli:main
     '''
 )

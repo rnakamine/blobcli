@@ -20,17 +20,16 @@ class BlobStorageClient():
         return list_containers
 
     def list_blobs(self, target):
-        if not target.startswith('blob://'):
-            msg = 'ls: {}: Invalid target'.format(target)
-            raise Exception(msg)
-
         original_target = target
+
+        if target.startswith('blob://'):
+            target = target.replace('blob://', '')
+
         if target.endswith('/'):
             target = target[:-1]
 
-        target = target.replace('blob://', '').split('/')
-        container_name = target[0]
-        target_path_list = target[1:]
+        container_name = target.split('/')[0]
+        target_path_list = target.split('/')[1:]
 
         container_client = self._blob_service_client.get_container_client(
             container_name)
@@ -81,3 +80,23 @@ class BlobStorageClient():
             if num < step_unit:
                 return '{:3.0f}{:s}'.format(num, x)
             num /= step_unit
+
+    def delete_blob(self, target):
+        original_target = target
+
+        if target.startswith('blob://'):
+            target = target.replace('blob://', '')
+        else:
+            msg = 'ls: {}: Invalid target'.format(target)
+            raise Exception(msg)
+
+        container_name = target.split('/')[0]
+        target_path_list = target.split('/')[1:]
+
+        blob_name = '/'.join(target_path_list)
+
+        blob_client = self._blob_service_client.get_blob_client(
+            container_name, blob_name)
+        blob_client.delete_blob()
+
+        return 'delete: {}'.format(original_target)

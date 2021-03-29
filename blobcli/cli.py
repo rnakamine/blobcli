@@ -15,9 +15,7 @@ def cli():
 @click.argument('target', default='')
 def ls(target):
     """List containers or blobs."""
-
     blob_client = BlobStorageClient()
-
     if target:
         blobs = blob_client.list_blobs(target)
         for blob in blobs:
@@ -28,6 +26,14 @@ def ls(target):
         for container in containers:
             click.echo('{} {}'.format(
                 container['last_modified'], container['name']))
+
+
+@cli.command()
+@click.argument('target')
+def rm(target):
+    """Delete blob."""
+    output = BlobStorageClient().delete_blob(target)
+    click.echo(output)
 
 
 def main():

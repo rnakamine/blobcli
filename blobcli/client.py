@@ -66,7 +66,7 @@ class BlobStorageClient():
         if target.startswith('blob://'):
             target = target.replace('blob://', '')
         else:
-            msg = 'rm: {}: Invalid target'.format(target)
+            msg = 'rm: Invalid argument type'
             raise Exception(msg)
 
         container_name = target.split('/')[0]

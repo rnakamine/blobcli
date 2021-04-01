@@ -47,8 +47,8 @@ class BlobStorageClient():
                               'last_modified': blob.last_modified,
                               'size': self._convert_bytes(blob.size)})
 
-        if not blobs:
-            msg = 'ls: {}: No such blob or directory'.format(original_target)
+        if target_path and not blobs:
+            msg = 'ls: {}: No such blob'.format(original_target)
             raise Exception(msg)
 
         return blobs
@@ -66,14 +66,23 @@ class BlobStorageClient():
         if target.startswith('blob://'):
             target = target.replace('blob://', '')
         else:
-            msg = 'ls: {}: Invalid target'.format(target)
+            msg = 'rm: {}: Invalid target'.format(target)
             raise Exception(msg)
 
         container_name = target.split('/')[0]
         target_path = '/'.join(target.split('/')[1:])
 
+        if container_name not in [c.name for c in self.list_contaners()]:
+            msg = 'rm: {}: No such container'.format(original_target)
+            raise Exception(msg)
+
         blob_client = self._blob_service_client.get_blob_client(
             container_name, target_path)
+
+        if not blob_client.exists():
+            msg = 'rm: {}: No such blob'.format(original_target)
+            raise Exception(msg)
+
         blob_client.delete_blob()
 
         return 'delete: {}'.format(original_target)

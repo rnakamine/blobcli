@@ -25,8 +25,12 @@ class BlobStorageClient():
         if target.startswith('blob://'):
             target = target.replace('blob://', '')
 
-        container_name = target.split('/')[0]
-        target_path = '/'.join(target.split('/')[1:])
+        target_split = target.split('/', 1)
+        if len(target_split) > 1:
+            container_name, target_path = target_split
+        else:
+            container_name = target_split[0]
+            target_path = None
 
         if container_name not in [c.name for c in self.list_contaners()]:
             msg = 'ls: {}: No such container'.format(original_target)
@@ -69,8 +73,12 @@ class BlobStorageClient():
             msg = 'rm: Invalid argument type'
             raise Exception(msg)
 
-        container_name = target.split('/')[0]
-        target_path = '/'.join(target.split('/')[1:])
+        target_split = target.split('/', 1)
+        if len(target_split) > 1:
+            container_name, target_path = target_split
+        else:
+            container_name = target_split[0]
+            target_path = None
 
         if container_name not in [c.name for c in self.list_contaners()]:
             msg = 'rm: {}: No such container'.format(original_target)
@@ -107,7 +115,7 @@ class BlobStorageClient():
                     blob_name = os.path.join(os.path.dirname(
                         dst_path), os.path.basename(src))
             else:
-                container_name = dst
+                container_name = dst_split[0]
                 blob_name = os.path.basename(src)
 
             self._upload_blob(container_name, blob_name, src)

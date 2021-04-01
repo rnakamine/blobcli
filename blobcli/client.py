@@ -1,6 +1,6 @@
 import os
 
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, BlobPrefix, BlobProperties
 
 
 class BlobStorageClient():
@@ -25,54 +25,33 @@ class BlobStorageClient():
         if target.startswith('blob://'):
             target = target.replace('blob://', '')
 
-        if target.endswith('/'):
-            target = target[:-1]
-
         container_name = target.split('/')[0]
-        target_path_list = target.split('/')[1:]
+        target_path = '/'.join(target.split('/')[1:])
+
+        if container_name not in [c.name for c in self.list_contaners()]:
+            msg = 'ls: {}: No such container'.format(original_target)
+            raise Exception(msg)
 
         container_client = self._blob_service_client.get_container_client(
             container_name)
-        list_blobs = [
-            b for b in container_client.list_blobs() if not b.deleted]
 
-        blobs, dirs = [], []
-        tmp_dir_name = []
-        for blob in list_blobs:
-            blob_path_list = blob.name.split('/')
-            if target_path_list:
-                if self._find_blob(target_path_list, blob_path_list):
-                    if target_path_list == blob_path_list:
-                        blob_path_list = blob_path_list[-1:]
-                    else:
-                        blob_path_list = blob_path_list[len(target_path_list):]
-                else:
-                    continue
+        blobs = []
+        for blob in container_client.walk_blobs(name_starts_with=target_path, delimiter='/'):
+            if type(blob) == BlobPrefix:
+                blobs.append({'name': blob.name,
+                              'last_modified': None,
+                              'size': 'PRE'})
 
-            # check directory or file
-            if len(blob_path_list) > 1:  # when directory
-                if blob_path_list[0] not in tmp_dir_name:
-                    dirs.append({'name': blob_path_list[0] + '/',
-                                 'last_modified': None,
-                                 'size': 'PRE'})
-                    tmp_dir_name.append(blob_path_list[0])
-            else:  # when blob
-                blobs.append({'name': blob_path_list[0],
+            elif type(blob) == BlobProperties and not blob.deleted:
+                blobs.append({'name': blob.name,
                               'last_modified': blob.last_modified,
                               'size': self._convert_bytes(blob.size)})
 
-        blobs = dirs + blobs
-        if target_path_list and not blobs:
+        if not blobs:
             msg = 'ls: {}: No such blob or directory'.format(original_target)
             raise Exception(msg)
 
         return blobs
-
-    def _find_blob(self, target_path_list, blob_path_list):
-        for i, t in enumerate(target_path_list):
-            if t != blob_path_list[i]:
-                return False
-        return True
 
     def _convert_bytes(self, num):
         step_unit = 1024
@@ -91,12 +70,10 @@ class BlobStorageClient():
             raise Exception(msg)
 
         container_name = target.split('/')[0]
-        target_path_list = target.split('/')[1:]
-
-        blob_name = '/'.join(target_path_list)
+        target_path = '/'.join(target.split('/')[1:])
 
         blob_client = self._blob_service_client.get_blob_client(
-            container_name, blob_name)
+            container_name, target_path)
         blob_client.delete_blob()
 
         return 'delete: {}'.format(original_target)

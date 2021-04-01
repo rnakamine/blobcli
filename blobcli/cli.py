@@ -36,6 +36,15 @@ def rm(target):
     click.echo(output)
 
 
+@cli.command()
+@click.argument('src')
+@click.argument('dst')
+def cp(src, dst):
+    """Copy blob."""
+    output = BlobStorageClient().transfer_blob(src, dst, delete_flag=None)
+    click.echo(output)
+
+
 def main():
     try:
         cli()

@@ -86,3 +86,52 @@ class BlobStorageClient():
         blob_client.delete_blob()
 
         return 'delete: {}'.format(original_target)
+
+    def transfer_blob(self, src, dst, delete_flag=False):
+        original_src, original_dst = src, dst
+        if src.startswith('blob://') and dst.startswith('blob://'):
+            pass
+
+        elif src.startswith('blob://'):
+            pass
+
+        elif dst.startswith('blob://'):
+            dst = dst.replace('blob://', '')
+
+            dst_split = dst.split('/', 1)
+            if len(dst_split) > 1:
+                container_name, dst_path = dst_split
+                if os.path.basename(dst_path):
+                    blob_name = dst_path
+                else:
+                    blob_name = os.path.join(os.path.dirname(
+                        dst_path), os.path.basename(src))
+            else:
+                container_name = dst
+                blob_name = os.path.basename(src)
+
+            self._upload_blob(container_name, blob_name, src)
+
+        if delete_flag:
+            action_name = 'move'
+        else:
+            action_name = 'copy'
+
+        return '{}: {} to {}'.format(action_name, original_src, original_dst)
+
+    def _upload_blob(self, container_name, blob_name, src):
+        blob_client = self._blob_service_client.get_blob_client(
+            container_name, blob=blob_name)
+
+        if blob_client.exists():
+            blob_client.delete_blob()
+
+        with open(src, 'rb') as f:
+            blob_client.upload_blob(f)
+
+    def _download_blob(self, container_name, blob_name):
+        blob_client = self._blob_service_client.get_blob_client(
+            container_name, blob=blob_name)
+
+        with open(blob_name) as f:
+            download_file.write(blob_client.download_blob().readall())

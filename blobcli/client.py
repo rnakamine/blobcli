@@ -93,7 +93,7 @@ class BlobStorageClient():
         with open(src, 'rb') as f:
             blob_client.upload_blob(f, overwrite=True)
 
-    def _upload_blob_from_blob(self, src_container_name, src_blob_name, dst_container_name, dst_blob_name):
+    def _upload_blob_from_blob_storage(self, src_container_name, src_blob_name, dst_container_name, dst_blob_name):
         src_blob_client = self._blob_service_client.get_blob_client(
             src_container_name, src_blob_name)
         dst_blob_client = self._blob_service_client.get_blob_client(
@@ -126,22 +126,21 @@ class BlobStorageClient():
         if src.startswith('blob://') and dst.startswith('blob://'):
             src = src.replace('blob://', '')
             dst = dst.replace('blob://', '')
-
             src_container_name, src_blob_name = self._extract_container_name(
                 src)
             dst_container_name, dst_blob_path = self._extract_container_name(
                 dst)
 
             if dst_blob_path:
-                if os.path.isfile(dst_blob_path):
-                    dst_blob_name = dst_blob_path
-                else:
+                if dst_blob_path.endswith('/'):
                     dst_blob_name = os.path.join(
                         dst_blob_path, os.path.basename(src_blob_name))
+                else:
+                    dst_blob_name = dst_blob_path
             else:
                 dst_blob_name = os.path.basename(src_blob_name)
 
-            self._upload_blob_from_blob(
+            self._upload_blob_from_blob_storage(
                 src_container_name, src_blob_name, dst_container_name, dst_blob_name)
 
         # blob storage to local
@@ -149,7 +148,7 @@ class BlobStorageClient():
             src = src.replace('blob://', '')
             container_name, blob_name = self._extract_container_name(src)
 
-            if os.path.isdir(dst):
+            if dst.endswith('/'):
                 dst = os.path.join(dst, os.path.basename(blob_name))
 
             self._download_blob(container_name, blob_name, dst)
@@ -160,11 +159,11 @@ class BlobStorageClient():
             container_name, dst_path = self._extract_container_name(dst)
 
             if dst_path:
-                if os.path.isfile(dst_path):
-                    blob_name = dst_path
-                else:
+                if dst.endswith('/'):
                     blob_name = os.path.join(os.path.dirname(
                         dst_path), os.path.basename(src))
+                else:
+                    blob_name = dst_path
             else:
                 blob_name = os.path.basename(src)
 

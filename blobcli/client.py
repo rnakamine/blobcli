@@ -95,11 +95,8 @@ class BlobStorageClient():
         blob_client = self._blob_service_client.get_blob_client(
             container_name, blob=blob_name)
 
-        if blob_client.exists():
-            blob_client.delete_blob()
-
         with open(src, 'rb') as f:
-            blob_client.upload_blob(f)
+            blob_client.upload_blob(f, overwrite=True)
 
     def _upload_blob_from_blob(self, src_container_name, src_blob_name, dst_container_name, dst_blob_name):
         src_blob_client = self._blob_service_client.get_blob_client(
@@ -108,7 +105,7 @@ class BlobStorageClient():
             dst_container_name, dst_blob_name)
 
         stream = src_blob_client.download_blob().readall()
-        dst_blob_client.upload_blob(stream)
+        dst_blob_client.upload_blob(stream, overwrite=True)
 
     def _download_blob(self, container_name, blob_name, dst):
         blob_client = self._blob_service_client.get_blob_client(

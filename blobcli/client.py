@@ -142,16 +142,22 @@ class BlobStorageClient():
 
             self._upload_blob_from_blob_storage(
                 src_container_name, src_blob_name, dst_container_name, dst_blob_name)
+            if delete_flag:
+                self.delete_blob(
+                    'blob://{}/{}'.format(src_container_name, src_blob_name))
 
         # blob storage to local
         elif src.startswith('blob://'):
             src = src.replace('blob://', '')
             container_name, blob_name = self._extract_container_name(src)
 
-            if dst.endswith('/'):
+            if dst.endswith('/') or dst == '.':
                 dst = os.path.join(dst, os.path.basename(blob_name))
 
             self._download_blob(container_name, blob_name, dst)
+            if delete_flag:
+                self.delete_blob(
+                    'blob://{}/{}'.format(container_name, blob_name))
 
         # local to blob storage
         elif dst.startswith('blob://'):
@@ -168,6 +174,8 @@ class BlobStorageClient():
                 blob_name = os.path.basename(src)
 
             self._upload_blob(container_name, blob_name, src)
+            if delete_flag:
+                os.remove(src)
 
         if delete_flag:
             action_name = 'move'

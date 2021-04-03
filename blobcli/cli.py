@@ -7,7 +7,7 @@ import click
 from .client import BlobStorageClient
 
 
-def _extract_container_name(path):
+def _split_path(path):
     container_name = path.split('/')[0]
     path = '/'.join(path.split('/')[1:])
     if not path:
@@ -18,10 +18,8 @@ def _extract_container_name(path):
 def blob_storage_to_blob_storage(src, dst, delete_flag=False):
     src = src.replace('blob://', '')
     dst = dst.replace('blob://', '')
-    src_container_name, src_blob_name = _extract_container_name(
-        src)
-    dst_container_name, dst_blob_path = _extract_container_name(
-        dst)
+    src_container_name, src_blob_name = _split_path(src)
+    dst_container_name, dst_blob_path = _split_path(dst)
 
     if dst_blob_path:
         if dst_blob_path.endswith('/'):
@@ -40,7 +38,7 @@ def blob_storage_to_blob_storage(src, dst, delete_flag=False):
 
 def blob_storage_to_local(src, dst, delete_flag=False):
     src = src.replace('blob://', '')
-    container_name, blob_name = _extract_container_name(src)
+    container_name, blob_name = _split_path(src)
 
     if dst.endswith('/') or dst == '.':
         dst = os.path.join(dst, os.path.basename(blob_name))
@@ -52,7 +50,7 @@ def blob_storage_to_local(src, dst, delete_flag=False):
 
 def local_to_blob_storage(src, dst, delete_flag=False):
     dst = dst.replace('blob://', '')
-    container_name, dst_path = _extract_container_name(dst)
+    container_name, dst_path = _split_path(dst)
 
     if dst_path:
         if dst.endswith('/'):
@@ -81,7 +79,7 @@ def ls(target):
     if target:
         if target.startswith('blob://'):
             target = target.replace('blob://', '')
-        container_name, blob_prefix = _extract_container_name(target)
+        container_name, blob_prefix = _split_path(target)
         blobs = blob_client.list_blobs(container_name, blob_prefix)
         for blob in blobs:
             click.echo('{:>25} {:>5} {}'.format(
@@ -104,7 +102,7 @@ def rm(target):
     else:
         msg = 'rm: Invalid argument type'
         raise Exception(msg)
-    container_name, blob_name = _extract_container_name(target)
+    container_name, blob_name = _split_path(target)
     BlobStorageClient().delete_blob(container_name, blob_name)
 
     click.echo('delete: {}'.format(original_target))

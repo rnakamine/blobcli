@@ -126,6 +126,11 @@ class BlobStorageClient():
                 src)
             dst_container_name, dst_blob_path = self._extract_container_name(
                 dst)
+
+            if not os.path.isfile(src_blob_name):
+                msg = 'Invalid argument type. source must be a file'
+                raise Exception(msg)
+
             if dst_blob_path:
                 if os.path.isfile(dst_blob_path):
                     dst_blob_name = dst_blob_path
@@ -142,6 +147,11 @@ class BlobStorageClient():
         elif src.startswith('blob://'):
             src = src.replace('blob://', '')
             container_name, blob_name = self._extract_container_name(src)
+
+            if not os.path.isfile(dst):
+                msg = 'Invalid argument type. source must be a file'
+                raise Exception(msg)
+
             if os.path.isdir(dst):
                 dst = os.path.join(dst, os.path.basename(blob_name))
 
@@ -151,6 +161,11 @@ class BlobStorageClient():
         elif dst.startswith('blob://'):
             dst = dst.replace('blob://', '')
             container_name, dst_path = self._extract_container_name(dst)
+
+            if not os.path.isfile(src):
+                msg = 'Invalid argument type. source must be a file'
+                raise Exception(msg)
+
             if dst_path:
                 if os.path.isfile(dst_path):
                     blob_name = dst_path

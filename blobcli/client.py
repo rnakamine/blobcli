@@ -75,16 +75,11 @@ class BlobStorageClient():
             raise Exception(msg)
 
         container_name, target_path = self._extract_container_name(target)
-
-        if container_name not in [c.name for c in self.list_contaners()]:
-            msg = 'rm: {}: No such container'.format(original_target)
-            raise Exception(msg)
-
         blob_client = self._blob_service_client.get_blob_client(
             container_name, target_path)
 
         if not blob_client.exists():
-            msg = 'rm: {}: No such blob'.format(original_target)
+            msg = 'rm: {}: No such container or blob'.format(original_target)
             raise Exception(msg)
 
         blob_client.delete_blob()
@@ -104,12 +99,22 @@ class BlobStorageClient():
         dst_blob_client = self._blob_service_client.get_blob_client(
             dst_container_name, dst_blob_name)
 
+        if not src_blob_client.exists():
+            msg = 'rm: blob://{}/{}: No such container or blob'.format(
+                src_container_name, src_blob_name)
+            raise Exception(msg)
+
         stream = src_blob_client.download_blob().readall()
         dst_blob_client.upload_blob(stream, overwrite=True)
 
     def _download_blob(self, container_name, blob_name, dst):
         blob_client = self._blob_service_client.get_blob_client(
             container_name, blob=blob_name)
+
+        if not blob_client.exists():
+            msg = 'rm: blob://{}/{}: No such container or blob'.format(
+                container_name, blob_name)
+            raise Exception(msg)
 
         with open(dst, 'wb') as f:
             f.write(blob_client.download_blob().readall())
@@ -126,10 +131,6 @@ class BlobStorageClient():
                 src)
             dst_container_name, dst_blob_path = self._extract_container_name(
                 dst)
-
-            if not os.path.isfile(src_blob_name):
-                msg = 'Invalid argument type. source must be a file'
-                raise Exception(msg)
 
             if dst_blob_path:
                 if os.path.isfile(dst_blob_path):
@@ -148,10 +149,6 @@ class BlobStorageClient():
             src = src.replace('blob://', '')
             container_name, blob_name = self._extract_container_name(src)
 
-            if not os.path.isfile(dst):
-                msg = 'Invalid argument type. source must be a file'
-                raise Exception(msg)
-
             if os.path.isdir(dst):
                 dst = os.path.join(dst, os.path.basename(blob_name))
 
@@ -161,10 +158,6 @@ class BlobStorageClient():
         elif dst.startswith('blob://'):
             dst = dst.replace('blob://', '')
             container_name, dst_path = self._extract_container_name(dst)
-
-            if not os.path.isfile(src):
-                msg = 'Invalid argument type. source must be a file'
-                raise Exception(msg)
 
             if dst_path:
                 if os.path.isfile(dst_path):

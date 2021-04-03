@@ -4,7 +4,7 @@ from azure.storage.blob import BlobServiceClient, BlobPrefix, BlobProperties
 
 
 class BlobStorageClient():
-    """Azure Blob Storage Client"""
+    """Azure Blob Storage Client."""
 
     def __init__(self):
         connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')

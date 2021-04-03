@@ -11,10 +11,10 @@ def cli():
     pass
 
 
-@cli.command(help='List containers or blobs')
+@cli.command(help='List containers or blobs.')
 @click.argument('target', default='')
 def ls(target):
-    """List containers or blobs"""
+    """List containers or blobs."""
     blob_client = BlobStorageClient()
     if target:
         blobs = blob_client.list_blobs(target)
@@ -28,28 +28,28 @@ def ls(target):
                 container['last_modified'], container['name']))
 
 
-@cli.command(help='Delete blob')
+@cli.command(help='Delete blob.')
 @click.argument('target')
 def rm(target):
-    """Delete blob"""
+    """Delete blob."""
     output = BlobStorageClient().delete_blob(target)
     click.echo(output)
 
 
-@cli.command(help='Copy blob')
+@cli.command(help='Copy blob.')
 @click.argument('src')
 @click.argument('dst')
 def cp(src, dst):
-    """Copy blob"""
+    """Copy blob."""
     output = BlobStorageClient().transfer_blob(src, dst, delete_flag=False)
     click.echo(output)
 
 
-@cli.command(help='Move blob')
+@cli.command(help='Move blob.')
 @click.argument('src')
 @click.argument('dst')
 def mv(src, dst):
-    """Move blob"""
+    """Move blob."""
     output = BlobStorageClient().transfer_blob(src, dst, delete_flag=True)
     click.echo(output)
 

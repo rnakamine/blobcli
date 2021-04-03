@@ -29,7 +29,7 @@ class BlobStorageClient():
 
     def list_blobs(self, container_name, blob_prefix):
         if container_name not in [c.name for c in self.list_contaners()]:
-            msg = 'ls: {}: No such container'.format(container_name)
+            msg = '{}: No such container'.format(container_name)
             raise Exception(msg)
 
         container_client = self._blob_service_client.get_container_client(
@@ -48,20 +48,18 @@ class BlobStorageClient():
                               'size': self._convert_bytes(blob.size)})
 
         if blob_prefix and not blobs:
-            msg = 'ls: {}: No such blob'.format(blob_prefix)
+            msg = '{}: No such blob'.format(blob_prefix)
             raise Exception(msg)
 
         return blobs
 
     def delete_blob(self, container_name, blob_name):
-        if container_name not in [c.name for c in self.list_contaners()]:
-            msg = 'ls: {}: No such container'.format(container_name)
-            raise Exception(msg)
-
         blob_client = self._blob_service_client.get_blob_client(
             container_name, blob_name)
+
         if not blob_client.exists():
-            msg = 'rm: {}: No such blob'.format(blob_name)
+            msg = 'blob://{}/{}: No such container or blob'.format(
+                container_name, blob_name)
             raise Exception(msg)
 
         blob_client.delete_blob()
@@ -80,7 +78,7 @@ class BlobStorageClient():
             dst_container_name, dst_blob_name)
 
         if not src_blob_client.exists():
-            msg = 'rm: blob://{}/{}: No such container or blob'.format(
+            msg = 'blob://{}/{}: No such container or blob'.format(
                 src_container_name, src_blob_name)
             raise Exception(msg)
 
@@ -92,7 +90,7 @@ class BlobStorageClient():
             container_name, blob=blob_name)
 
         if not blob_client.exists():
-            msg = 'rm: blob://{}/{}: No such container or blob'.format(
+            msg = 'blob://{}/{}: No such container or blob'.format(
                 container_name, blob_name)
             raise Exception(msg)
 

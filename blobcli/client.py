@@ -5,6 +5,8 @@ from azure.storage.blob import BlobServiceClient, BlobPrefix, BlobProperties
 
 class BlobStorageClient():
 
+    """ Azure Blob Storage Client Class"""
+
     def __init__(self):
         connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
         if not connect_str:

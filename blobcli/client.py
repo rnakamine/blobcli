@@ -71,7 +71,7 @@ class BlobStorageClient():
         with open(src, 'rb') as f:
             blob_client.upload_blob(f, overwrite=True)
 
-    def upload_blob_from_blob_storage(self, src_container_name, src_blob_name, dst_container_name, dst_blob_name):
+    def copy_blob(self, src_container_name, src_blob_name, dst_container_name, dst_blob_name):
         src_blob_client = self._blob_service_client.get_blob_client(
             src_container_name, src_blob_name)
         dst_blob_client = self._blob_service_client.get_blob_client(

@@ -34,15 +34,15 @@ $ blobcli ls
 Show list of blobs for the specified container
 ```sh
 $ blobcli ls samplecontainer01/
-                            PRE sample-dir01/
+                            PRE sample-dir/
 2021-04-04 12:43:49+00:00    0B sample01.txt
 2021-04-04 12:43:54+00:00    0B sample02.txt
 2021-04-04 12:43:58+00:00    0B sample03.txt
 ```
 
 ```sh
-$ blobcli ls samplecontainer01/sample-dir01/
-2021-04-04 12:45:28+00:00    0B sample-dir01/sample01.txt
+$ blobcli ls samplecontainer01/sample-dir/
+2021-04-04 12:45:28+00:00    0B sample-dir/sample04.txt
 ```
 
 ### Delete blob

@@ -17,6 +17,21 @@ Set connection string to environment variable
 $ export AZURE_STORAGE_CONNECTION_STRING="<yourconnectionstring>"
 ```
 
+```sh
+$ blobcli
+Usage: blobcli [OPTIONS] COMMAND [ARGS]...
+
+  blob storage easy operation cli (v0.0.1)
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  cp  Copy blob.
+  ls  List containers or blobs.
+  mv  Move blob.
+  rm  Delete blob.
+```
 
 ### List containers or blobs
 ```sh

@@ -2,7 +2,7 @@
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-This is a command line interface to handle Blobs in Azure Blob Storage like a UNIX command.
+This is a command line interface for easy operation with blobs in Azure Blob Storage.
 
 ## Installation
 

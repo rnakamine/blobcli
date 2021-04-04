@@ -64,11 +64,11 @@ class BlobStorageClient():
 
         blob_client.delete_blob()
 
-    def upload_blob(self, container_name, blob_name, src):
+    def upload_blob(self, container_name, blob_name, path):
         blob_client = self._blob_service_client.get_blob_client(
             container_name, blob=blob_name)
 
-        with open(src, 'rb') as f:
+        with open(path, 'rb') as f:
             blob_client.upload_blob(f, overwrite=True)
 
     def copy_blob(self, src_container_name, src_blob_name, dst_container_name, dst_blob_name):
@@ -85,7 +85,7 @@ class BlobStorageClient():
         stream = src_blob_client.download_blob().readall()
         dst_blob_client.upload_blob(stream, overwrite=True)
 
-    def download_blob(self, container_name, blob_name, dst):
+    def download_blob(self, container_name, blob_name, path):
         blob_client = self._blob_service_client.get_blob_client(
             container_name, blob=blob_name)
 
@@ -94,5 +94,5 @@ class BlobStorageClient():
                 container_name, blob_name)
             raise Exception(msg)
 
-        with open(dst, 'wb') as f:
+        with open(path, 'wb') as f:
             f.write(blob_client.download_blob().readall())

@@ -18,7 +18,6 @@ $ export AZURE_STORAGE_CONNECTION_STRING="<yourconnectionstring>"
 
 
 ### List blobs
-list containers
 ```sh
 $ blobcli ls <target>
 ```

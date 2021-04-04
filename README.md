@@ -1,5 +1,6 @@
 # blobcli
 
+[![PyPI version](https://badge.fury.io/py/blobcli.svg)](https://badge.fury.io/py/blobcli)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 This is a command line interface for easy operation with blobs in Azure Blob Storage.
@@ -101,3 +102,6 @@ container to container
 $ blobcli cp blob://samplecontainer01/sample01.txt blob://samplecontainer02/sample11.txt
 copy: blob://samplecontainer01/sample01.txt to blob://samplecontainer02/sample11.txt
 ```
+
+## License
+This project are released under the [MIT License](LICENSE)

@@ -40,6 +40,11 @@ $ blobcli ls samplecontainer01/
 2021-04-04 12:43:58+00:00    0B sample03.txt
 ```
 
+```sh
+$ blobcli ls samplecontainer01/sample-dir01/
+2021-04-04 12:45:28+00:00    0B sample-dir01/sample01.txt
+```
+
 ### Delete blob
 ```sh
 $ blobcli rm <target>

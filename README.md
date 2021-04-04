@@ -17,7 +17,7 @@ $ export AZURE_STORAGE_CONNECTION_STRING="<yourconnectionstring>"
 ```
 
 
-### List blobs
+### List containers or blobs
 ```sh
 $ blobcli ls <target>
 ```
@@ -32,16 +32,17 @@ $ blobcli ls
 
 Show list of blobs for the specified container
 ```sh
-$ blobcli ls samplecontainer01/
-                            PRE sample-dir/
+$ blobcli ls samplecontainer01
+                            PRE sample-dir01/
+                            PRE sample-dir02/
 2021-04-04 12:43:49+00:00    0B sample01.txt
 2021-04-04 12:43:54+00:00    0B sample02.txt
 2021-04-04 12:43:58+00:00    0B sample03.txt
 ```
 
 ```sh
-$ blobcli ls samplecontainer01/sample-dir/
-2021-04-04 12:48:15+00:00    0B sample04.txt
+$ blobcli ls samplecontainer01/sample-dir01/
+2021-04-04 12:56:27+00:00    0B sample04.txt
 ```
 
 ### Delete blob

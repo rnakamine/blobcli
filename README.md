@@ -50,6 +50,12 @@ $ blobcli ls samplecontainer01/sample-dir01/
 $ blobcli rm <target>
 ```
 
+Delete the specified blob
+```sh
+$ blobcli rm blob://samplecontainer01/sample03.txt
+delete: blob://samplecontainer01/sample03.txt
+```
+
 ### Move blob
 ```sh
 $ blobcli mv <source> <target> 

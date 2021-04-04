@@ -58,7 +58,7 @@ class BlobStorageClient():
             container_name, blob_name)
 
         if not blob_client.exists():
-            msg = 'blob://{}/{}: No such container or blob'.format(
+            msg = '{}/{}: No such container or blob'.format(
                 container_name, blob_name)
             raise Exception(msg)
 
@@ -78,7 +78,7 @@ class BlobStorageClient():
             dst_container_name, dst_blob_name)
 
         if not src_blob_client.exists():
-            msg = 'blob://{}/{}: No such container or blob'.format(
+            msg = '{}/{}: No such container or blob'.format(
                 src_container_name, src_blob_name)
             raise Exception(msg)
 
@@ -90,7 +90,7 @@ class BlobStorageClient():
             container_name, blob=blob_name)
 
         if not blob_client.exists():
-            msg = 'blob://{}/{}: No such container or blob'.format(
+            msg = '{}/{}: No such container or blob'.format(
                 container_name, blob_name)
             raise Exception(msg)
 

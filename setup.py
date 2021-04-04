@@ -10,7 +10,7 @@ if os.path.exists('README.md'):
 
 setup(
     name="blobcli",
-    version='0.0.1',
+    version='0.0.2',
     packages=find_packages(),
     author='Ryo Nakamine',
     author_email='rnakamine8080@gmail.com',
@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='~=3.6',
-    install_requires=['Click', 'azure-storage-blob'],
+    install_requires=['Click', 'azure-storage-blob==12.8.0'],
     entry_points='''
         [console_scripts]
         blobcli=blobcli.cli:main

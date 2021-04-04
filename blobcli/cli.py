@@ -4,8 +4,8 @@ import sys
 
 import click
 
+from blobcli import __version__
 from blobcli.client import BlobStorageClient
-from . import __version__
 
 
 def _split_path(path):

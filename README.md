@@ -21,7 +21,7 @@ $ export AZURE_STORAGE_CONNECTION_STRING="<yourconnectionstring>"
 $ blobcli
 Usage: blobcli [OPTIONS] COMMAND [ARGS]...
 
-  blob storage easy operation cli (v0.0.1)
+  blob storage easy operation cli (v0.0.2)
 
 Options:
   --help  Show this message and exit.

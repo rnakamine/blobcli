@@ -4,7 +4,8 @@ import sys
 
 import click
 
-from .client import BlobStorageClient
+from blobcli.client import BlobStorageClient
+from . import __version__
 
 
 def _split_path(path):
@@ -66,7 +67,7 @@ def local_to_container(src, dst, delete_flag=False):
         os.remove(src)
 
 
-@click.group()
+@click.group(help='blob storage easy operation cli (v{})'.format(__version__))
 def cli():
     pass
 

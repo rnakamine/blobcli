@@ -43,7 +43,7 @@ class BlobStorageClient():
                               'size': 'PRE'})
 
             elif type(blob) == BlobProperties and not blob.deleted:
-                blobs.append({'name': blob.name,
+                blobs.append({'name': blob.name.split('/')[-1],
                               'last_modified': blob.last_modified,
                               'size': self._convert_bytes(blob.size)})
 

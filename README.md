@@ -61,7 +61,43 @@ delete: blob://samplecontainer01/sample03.txt
 $ blobcli mv <source> <target> 
 ```
 
+Move blob from local to container
+```sh
+$ blobcli mv sample05.txt blob://samplecontainer01/sample-dir01/
+move: sample05.txt to blob://samplecontainer01/sample-dir01/
+```
+
+container to local
+```sh
+$ blobcli mv blob://samplecontainer01/sample-dir01/sample05.txt .
+move: blob://samplecontainer01/sample-dir01/sample05.txt to .
+```
+
+container to container
+```sh
+$ blobcli mv blob://samplecontainer01/sample01.txt blob://samplecontainer02/sample11.txt
+move: blob://samplecontainer01/sample01.txt to blob://samplecontainer02/sample11.txt
+```
+
 ### Copy blob
 ```sh
 $ blobcli cp <source> <target>
+```
+
+Copy blob from local to container
+```sh
+$ blobcli cp sample05.txt blob://samplecontainer01/sample-dir01/
+copy: sample05.txt to blob://samplecontainer01/sample-dir01/
+```
+
+container to local
+```sh
+$ blobcli cp blob://samplecontainer01/sample-dir01/sample05.txt .
+copy: blob://samplecontainer01/sample-dir01/sample05.txt to .
+```
+
+container to container
+```sh
+$ blobcli cp blob://samplecontainer01/sample01.txt blob://samplecontainer02/sample11.txt
+copy: blob://samplecontainer01/sample01.txt to blob://samplecontainer02/sample11.txt
 ```

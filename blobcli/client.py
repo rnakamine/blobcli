@@ -16,9 +16,9 @@ class BlobStorageClient():
             connect_str)
 
     def list_contaners(self):
-        list_containers = [
+        containers = [
             c for c in self._blob_service_client.list_containers() if not c.deleted]
-        return list_containers
+        return containers
 
     def _convert_bytes(self, num):
         step_unit = 1024

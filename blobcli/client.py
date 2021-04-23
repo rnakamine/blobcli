@@ -38,12 +38,12 @@ class BlobStorageClient():
         blobs = []
         for blob in container_client.walk_blobs(name_starts_with=blob_prefix, delimiter='/'):
             if type(blob) == BlobPrefix:
-                blobs.append({'name': blob.name,
-                              'last_modified': None,
-                              'size': 'PRE'})
+                blobs.append({'type': 'prefix',
+                              'name': blob.name})
 
             elif type(blob) == BlobProperties and not blob.deleted:
-                blobs.append({'name': blob.name.split('/')[-1],
+                blobs.append({'type': 'blob',
+                              'name': blob.name.split('/')[-1],
                               'last_modified': blob.last_modified,
                               'size': self._convert_bytes(blob.size)})
 

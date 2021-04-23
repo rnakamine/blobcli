@@ -83,8 +83,12 @@ def ls(target):
         blobs = BlobStorageClient().list_blobs(container_name, blob_prefix)
 
         for blob in blobs:
-            click.echo('{:>25} {:>5} {}'.format(
-                str(blob['last_modified'] or ''), blob['size'] or '', blob['name']))
+            if blob['type'] == 'prefix':
+                click.echo('{:>31} {}'.format('PRE', blob['name']))
+            elif blob['type'] == 'blob':
+                click.echo('{:>25} {:>5} {}'.format(
+                    str(blob['last_modified']), blob['size'], blob['name']))
+
     else:
         containers = BlobStorageClient().list_contaners()
 

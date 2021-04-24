@@ -125,6 +125,10 @@ def cp(src, dst):
         container_to_local(src, dst, delete_flag=False)
     elif dst.startswith('blob://'):
         local_to_container(src, dst, delete_flag=False)
+    else:
+        msg = 'rm: Invalid source or target: {} to {}'.format(
+            original_src, original_dst)
+        raise Exception(msg)
 
     click.echo('copy: {} to {}'.format(original_src, original_dst))
 
@@ -141,6 +145,10 @@ def mv(src, dst):
         container_to_local(src, dst, delete_flag=True)
     elif dst.startswith('blob://'):
         local_to_container(src, dst, delete_flag=True)
+    else:
+        msg = 'rm: Invalid source or target: {} to {}'.format(
+            original_src, original_dst)
+        raise Exception(msg)
 
     click.echo('move: {} to {}'.format(original_src, original_dst))
 

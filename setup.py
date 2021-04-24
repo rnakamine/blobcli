@@ -10,7 +10,7 @@ if os.path.exists('README.md'):
 
 setup(
     name="blobcli",
-    version='0.0.2',
+    version='0.0.5',
     packages=find_packages(),
     author='Ryo Nakamine',
     author_email='rnakamine8080@gmail.com',

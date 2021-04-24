@@ -1,5 +1,6 @@
 # blobcli
 
+[![release status](https://github.com/rnakamine/blobcli/workflows/release/badge.svg)
 [![PyPI version](https://badge.fury.io/py/blobcli.svg)](https://badge.fury.io/py/blobcli)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -21,7 +22,7 @@ $ export AZURE_STORAGE_CONNECTION_STRING="<yourconnectionstring>"
 $ blobcli
 Usage: blobcli [OPTIONS] COMMAND [ARGS]...
 
-  blob storage easy operation cli (v0.0.2)
+  blob storage easy operation cli (v*.*.*)
 
 Options:
   --help  Show this message and exit.

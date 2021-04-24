@@ -16,8 +16,11 @@ class BlobStorageClient():
             connect_str)
 
     def list_contaners(self):
-        containers = [
-            c for c in self._blob_service_client.list_containers() if not c.deleted]
+        containers = []
+        for container in self._blob_service_client.list_containers():
+            if not container.deleted:
+                containers.append({'name': container.name,
+                                   'last_modified': container.last_modified})
         return containers
 
     def _convert_bytes(self, num):
@@ -28,7 +31,7 @@ class BlobStorageClient():
             num /= step_unit
 
     def list_blobs(self, container_name, blob_prefix):
-        if container_name not in [c.name for c in self.list_contaners()]:
+        if container_name not in [c['name'] for c in self.list_contaners()]:
             msg = '{}: No such container'.format(container_name)
             raise Exception(msg)
 

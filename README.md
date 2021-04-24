@@ -1,6 +1,6 @@
 # blobcli
 
-[![release status](https://github.com/rnakamine/blobcli/workflows/release/badge.svg)
+![release status](https://github.com/rnakamine/blobcli/workflows/release/badge.svg)
 [![PyPI version](https://badge.fury.io/py/blobcli.svg)](https://badge.fury.io/py/blobcli)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
